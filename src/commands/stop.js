@@ -3,17 +3,23 @@ const { getVoiceConnection } = require("@discordjs/voice");
 const { endSession, getActiveSession } = require("../audio/streamManager");
 const { mixdown } = require("../audio/mixer");
 const { cleanupSessionData } = require("../utils/cleanup");
+const { transcribe } = require("../ai/transcriber");
+const { summarize } = require("../ai/summarizer");
 const fs = require("fs");
+
+const DISCORD_MSG_LIMIT = 1900;
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("stop")
-    .setDescription("Stop recording and generate the final mixdown"),
+    .setDescription(
+      "หนูหยุดอัดเสียงแล้ว เริ่มสร้างไฟล์เสียง สรุป และถอดเสียง 📝",
+    ),
 
   async execute(interaction) {
     if (!getActiveSession()) {
       return interaction.reply({
-        content: "I am not currently recording!",
+        content: "หนูไม่ได้อัดเสียงอยู่น้าาาาา",
         ephemeral: true,
       });
     }
@@ -29,37 +35,74 @@ module.exports = {
       }
 
       if (sessionData.chunks.length === 0) {
-        return interaction.followUp(
-          "Recording stopped, but no audio was detected.",
-        );
+        return interaction.followUp("หยุดอัดเสียงแล้ว แต่ไม่เจอเสียงพูดเลย 🥺");
       }
 
-      await interaction.followUp(
-        "Processing audio tracks... This may take a moment.",
+      await interaction.editReply(
+        "⏳ **`[1/3]`** กำลังรวมไฟล์เสียง อยู่น้าทุกคน 😘",
       );
 
       const outputPath = await mixdown(sessionData);
 
+      await interaction.editReply(
+        "⏳ **`[2/3]`** กำลังถอดเสียงอยู่น้าาาาา รอแป๊ปนุงง 🥹",
+      );
+
+      // Parse member names from .env
+      let members = [];
+      try {
+        if (process.env.MEMBERS_NAMES) {
+          members = JSON.parse(process.env.MEMBERS_NAMES);
+        }
+      } catch (e) {
+        console.warn("Failed to parse MEMBERS_NAMES from .env:", e.message);
+      }
+
+      const taskData = {
+        chunks: sessionData.chunks,
+        members: members
+      };
+
+      const transcript = await transcribe(taskData);
+      
+      // Clean up PCM files only AFTER transcription finishes
       cleanupSessionData(sessionData);
+
+      await interaction.editReply("⏳ **`[3/3]`** กำลังสรุปอยู่น้าาาาา 😋");
+
+      const summary = await summarize(transcript);
 
       const stats = fs.statSync(outputPath);
       const fileSizeInMB = stats.size / (1024 * 1024);
 
+      const baseName = outputPath.substring(0, outputPath.lastIndexOf("."));
+      const transcriptPath = `${baseName}_transcript.txt`;
+      const summaryPath = `${baseName}_summary.md`;
+
+      fs.writeFileSync(transcriptPath, transcript, "utf8");
+      fs.writeFileSync(summaryPath, summary, "utf8");
+
+      const header = `✅ **สรุปการประชุม**\n\n`;
+      const footer = `\n\n---\n*⚠️ ปล. เบิร์นไฟ อาจจะมีการถอดเสียงหรือสรุปผิดพลาดได้น้าาา เช็คความถูกต้องอีกทีด้วยจ้า*\n*Files saved locally to \`~/Downloads\`*`;
+
+      const summaryBody =
+        summary.length > DISCORD_MSG_LIMIT
+          ? summary.slice(0, DISCORD_MSG_LIMIT) +
+            "\n*(truncated — full notes attached in file)*"
+          : summary;
+
+      const attachments = [transcriptPath, summaryPath];
       if (fileSizeInMB < 25) {
-        await interaction.editReply({
-          content: "✅ Complete! Here is your meeting recording.",
-          files: [outputPath],
-        });
-      } else {
-        await interaction.editReply({
-          content: `✅ Complete! The file is too large to send over Discord (${fileSizeInMB.toFixed(2)} MB), but it has been saved to local`,
-        });
+        attachments.unshift(outputPath);
       }
+
+      await interaction.editReply({
+        content: header + summaryBody + footer,
+        files: attachments,
+      });
     } catch (error) {
-      console.error("Failure during stop or mixdown:", error);
-      await interaction.editReply(
-        "❌ Failed to process the recording Mixdown.",
-      );
+      console.error("Pipeline error:", error);
+      await interaction.editReply(`❌ **Pipeline failed:** ${error.message}`);
     }
   },
 };

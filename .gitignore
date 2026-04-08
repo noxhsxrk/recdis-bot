@@ -4,3 +4,4 @@ exports
 recordings_ramdisk
 
 .DS_Store
+local_whisper_model

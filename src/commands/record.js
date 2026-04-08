@@ -5,7 +5,7 @@ const { initSession, getActiveSession } = require("../audio/streamManager");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("record")
-    .setDescription("Starts recording the current voice channel"),
+    .setDescription("เบิร์นไฟ กำลังอัดเสียงอยู่น้าาาาา"),
 
   async execute(interaction) {
     const voiceChannel = interaction.member.voice.channel;
@@ -36,7 +36,7 @@ module.exports = {
       initSession(connection);
 
       return interaction.followUp(
-        `Started recording in **${voiceChannel.name}**! Use \`/stop\` to end recording and generate the mixdown.`,
+        `เบิร์นไฟกำลังอัดเสียงอยู่น้าาาาา ที่ **${voiceChannel.name}**! ใช้ \`/stop\` เพื่อหยุดอัดเสียงและสร้างไฟล์เสียง`,
       );
     } catch (error) {
       console.error("Failed to start recording:", error);
