@@ -33,9 +33,15 @@ async function summarize(transcript) {
   const response = await ollama.chat({
     model,
     messages: [{ role: "user", content: PROMPT_TEMPLATE(transcript) }],
+    stream: true,
   });
 
-  return response.message.content;
+  let fullContent = "";
+  for await (const part of response) {
+    fullContent += part.message.content;
+  }
+
+  return fullContent;
 }
 
 module.exports = { summarize };

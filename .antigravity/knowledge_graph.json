@@ -1,25 +1,26 @@
 {
   "schema": "antigravity-knowledge-graph-v2",
-  "created_at_utc": "2026-04-08T13:49:42.075263+00:00",
+  "created_at_utc": "2026-04-08T15:29:10.988561+00:00",
   "workspace": "/Users/saharat.wae/playground/recdis-bot",
   "summary": {
-    "file_count": 21,
-    "walked_file_count": 21,
+    "file_count": 33,
+    "walked_file_count": 33,
     "languages": {
-      "JavaScript": 6,
-      "Markdown": 4,
-      "JSON": 2
+      "JavaScript": 8,
+      "JSON": 7,
+      "Markdown": 5,
+      "Python": 2
     },
     "frameworks": [
       "Node.js",
       "Make"
     ],
     "type_distribution": {
-      "binary": 1,
-      "code": 12,
-      "other": 8
+      "binary": 2,
+      "code": 22,
+      "other": 9
     },
-    "semantic_edges": 0
+    "semantic_edges": 9
   },
   "nodes": [
     {
@@ -31,18 +32,24 @@
       "id": "language:javascript",
       "type": "language",
       "label": "JavaScript",
-      "count": 6
-    },
-    {
-      "id": "language:markdown",
-      "type": "language",
-      "label": "Markdown",
-      "count": 4
+      "count": 8
     },
     {
       "id": "language:json",
       "type": "language",
       "label": "JSON",
+      "count": 7
+    },
+    {
+      "id": "language:markdown",
+      "type": "language",
+      "label": "Markdown",
+      "count": 5
+    },
+    {
+      "id": "language:python",
+      "type": "language",
+      "label": "Python",
       "count": 2
     },
     {
@@ -66,9 +73,19 @@
       "label": "exports"
     },
     {
+      "id": "dir:local_whisper_model",
+      "type": "directory",
+      "label": "local_whisper_model"
+    },
+    {
       "id": "dir:recordings_ramdisk",
       "type": "directory",
       "label": "recordings_ramdisk"
+    },
+    {
+      "id": "dir:scripts",
+      "type": "directory",
+      "label": "scripts"
     },
     {
       "id": "dir:src",
@@ -93,7 +110,7 @@
       "id": "file:Makefile",
       "type": "other",
       "label": "Makefile",
-      "size": 458,
+      "size": 2264,
       "mime": "application/octet-stream"
     },
     {
@@ -114,36 +131,43 @@
       "id": "file:README.md",
       "type": "code",
       "label": "README.md",
-      "size": 3105,
+      "size": 4889,
       "mime": "application/octet-stream"
     },
     {
       "id": "file:.gitignore",
       "type": "other",
       "label": ".gitignore",
-      "size": 55,
+      "size": 75,
       "mime": "application/octet-stream"
     },
     {
       "id": "file:package-lock.json",
       "type": "code",
       "label": "package-lock.json",
-      "size": 33587,
+      "size": 34155,
       "mime": "application/json"
     },
     {
       "id": "file:package.json",
       "type": "code",
       "label": "package.json",
-      "size": 537,
+      "size": 561,
       "mime": "application/json"
     },
     {
       "id": "file:.env",
       "type": "other",
       "label": ".env",
-      "size": 312,
+      "size": 1535,
       "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:transcribe.py",
+      "type": "code",
+      "label": "transcribe.py",
+      "size": 2713,
+      "mime": "text/x-python"
     },
     {
       "id": "file:.clinerules",
@@ -181,6 +205,69 @@
       "mime": "application/octet-stream"
     },
     {
+      "id": "file:local_whisper_model/tokenizer_config.json",
+      "type": "code",
+      "label": "local_whisper_model/tokenizer_config.json",
+      "size": 15,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:local_whisper_model/special_tokens_map.json",
+      "type": "code",
+      "label": "local_whisper_model/special_tokens_map.json",
+      "size": 15,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:local_whisper_model/weights.safetensors",
+      "type": "binary",
+      "label": "local_whisper_model/weights.safetensors",
+      "size": 1613977612,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:local_whisper_model/config.json",
+      "type": "code",
+      "label": "local_whisper_model/config.json",
+      "size": 268,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:local_whisper_model/tokenizer.json",
+      "type": "code",
+      "label": "local_whisper_model/tokenizer.json",
+      "size": 15,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:local_whisper_model/generation_config.json",
+      "type": "code",
+      "label": "local_whisper_model/generation_config.json",
+      "size": 15,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:local_whisper_model/README.md",
+      "type": "code",
+      "label": "local_whisper_model/README.md",
+      "size": 316,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:local_whisper_model/.gitattributes",
+      "type": "other",
+      "label": "local_whisper_model/.gitattributes",
+      "size": 1519,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:scripts/download_model.py",
+      "type": "code",
+      "label": "scripts/download_model.py",
+      "size": 541,
+      "mime": "text/x-python"
+    },
+    {
       "id": "file:src/index.js",
       "type": "code",
       "label": "src/index.js",
@@ -198,7 +285,7 @@
       "id": "file:src/audio/mixer.js",
       "type": "code",
       "label": "src/audio/mixer.js",
-      "size": 2318,
+      "size": 2206,
       "mime": "text/javascript"
     },
     {
@@ -209,18 +296,73 @@
       "mime": "text/javascript"
     },
     {
+      "id": "file:src/ai/transcriber.js",
+      "type": "code",
+      "label": "src/ai/transcriber.js",
+      "size": 1717,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/ai/summarizer.js",
+      "type": "code",
+      "label": "src/ai/summarizer.js",
+      "size": 1503,
+      "mime": "text/javascript"
+    },
+    {
       "id": "file:src/commands/stop.js",
       "type": "code",
       "label": "src/commands/stop.js",
-      "size": 1931,
+      "size": 4813,
       "mime": "text/javascript"
     },
     {
       "id": "file:src/commands/record.js",
       "type": "code",
       "label": "src/commands/record.js",
-      "size": 1454,
+      "size": 1661,
       "mime": "text/javascript"
+    },
+    {
+      "id": "module:sys",
+      "type": "module",
+      "label": "sys"
+    },
+    {
+      "id": "module:os",
+      "type": "module",
+      "label": "os"
+    },
+    {
+      "id": "module:json",
+      "type": "module",
+      "label": "json"
+    },
+    {
+      "id": "module:subprocess",
+      "type": "module",
+      "label": "subprocess"
+    },
+    {
+      "id": "module:mlx_whisper",
+      "type": "module",
+      "label": "mlx_whisper"
+    },
+    {
+      "id": "module:re",
+      "type": "module",
+      "label": "re"
+    },
+    {
+      "id": "symbol:transcribe.py:is_hallucination",
+      "type": "function",
+      "label": "is_hallucination",
+      "lineno": 8
+    },
+    {
+      "id": "module:huggingface_hub",
+      "type": "module",
+      "label": "huggingface_hub"
     }
   ],
   "edges": [
@@ -231,12 +373,17 @@
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "language:json",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "language:markdown",
       "type": "uses_language"
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
-      "to": "language:json",
+      "to": "language:python",
       "type": "uses_language"
     },
     {
@@ -261,7 +408,17 @@
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:local_whisper_model",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "dir:recordings_ramdisk",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:scripts",
       "type": "contains"
     },
     {
@@ -321,6 +478,11 @@
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:transcribe.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "file:.clinerules",
       "type": "contains"
     },
@@ -346,6 +508,51 @@
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/tokenizer_config.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/special_tokens_map.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/weights.safetensors",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/config.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/tokenizer.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/generation_config.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/README.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:local_whisper_model/.gitattributes",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:scripts/download_model.py",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "file:src/index.js",
       "type": "contains"
     },
@@ -366,6 +573,16 @@
     },
     {
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/ai/transcriber.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/ai/summarizer.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "file:src/commands/stop.js",
       "type": "contains"
     },
@@ -373,6 +590,51 @@
       "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
       "to": "file:src/commands/record.js",
       "type": "contains"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:sys",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:json",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:subprocess",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:mlx_whisper",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "module:re",
+      "type": "imports"
+    },
+    {
+      "from": "file:transcribe.py",
+      "to": "symbol:transcribe.py:is_hallucination",
+      "type": "defines"
+    },
+    {
+      "from": "file:scripts/download_model.py",
+      "to": "module:os",
+      "type": "imports"
+    },
+    {
+      "from": "file:scripts/download_model.py",
+      "to": "module:huggingface_hub",
+      "type": "imports"
     }
   ]
 }

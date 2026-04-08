@@ -35,7 +35,7 @@ setup-python:
 	@echo "Setting up Python virtual environment..."
 	@python3 -m venv $(VENV_DIR)
 	@$(VENV_PYTHON) -m pip install --upgrade pip -q
-	@$(VENV_PYTHON) -m pip install mlx-whisper hf_transfer -q
+	@$(VENV_PYTHON) -m pip install mlx-whisper hf_transfer torch torchaudio torchcodec -q
 	@echo "Python worker ready at $(VENV_PYTHON)"
 
 ## Start the bot (requires Ollama to be running)

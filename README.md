@@ -6,14 +6,16 @@ A privacy-focused Discord bot built with Node.js that records multi-track audio 
 
 - 🎧 **Multi-Track Recording:** Captures each speaker's RTP packets individually so voices never clip or muffle each other before mixdown.
 - ⏱️ **Automatic Timeline Alignment:** Tracks precise millisecond offsets of when each user spoke. FFmpeg adds delays to align all speech bursts perfectly.
-- 🧠 **Local AI Transcription (MLX Whisper):** Uses Apple's Neural Engine via the `mlx-whisper` Python library — fast, private, no API keys.
 - 🗣️ **Real-time Diarization (Speaker ID):** Accurately tags individual transcription lines with the speaker's mapped name based on their isolated Discord audio track.
-- 📝 **AI Meeting Summary (Ollama):** Sends the transcript to a locally-running Ollama model and posts structured notes (main topics, decisions, action items) directly into Discord.
+- 🧠 **Local AI Transcription (MLX Whisper):** Uses Apple's Neural Engine via `mlx-whisper` — fast, private, and optimized for M-series chips.
+- 🛡️ **Silero VAD (Voice Activity Detection):** Integrated hardware-accelerated speech detection that filters out keyboard clicks and background noise before it hits the AI, preventing "hallucinations."
+- 📝 **AI Meeting Summary (Ollama):** Generates structured notes via local Ollama models with a streaming implementation to prevent timeouts on long transcripts.
+- ⚡ **Anti-Hallucination Filters:** Built-in heuristics to detect and discard infinite word loops or "A.I. stuttering."
 - 🛡️ **Privacy Hardened:**
   - Raw `.pcm` buffers are written to `tmpfs` (RAM disk) — never persistently stored on disk.
   - No database; all session metadata is in-memory only.
-  - Temp files are automatically deleted the moment mixing completes.
-- 🚀 **Apple Silicon Optimised:** Uses `opusscript` for safe ARM-compatible Opus decoding and MLX for hardware-accelerated inference.
+  - Temp files are automatically deleted the moment transcription completes.
+- 🚀 **Apple Silicon Optimised:** Uses MLX for hardware-accelerated inference and CoreAudio-optimized libraries.
 
 ## 🛠 Prerequisites
 
@@ -49,12 +51,15 @@ MEMBERS_NAMES=[{"id": 123456789, "name": "Alice"}, {"id": 987654321, "name": "Bo
 ```
 
 ### 2. Pull the Ollama model
+For best Thai results, we recommend **Qwen 2.5 (7B or 14B)** or **Llama 3.2**:
 ```bash
+ollama pull qwen2.5:7b
+# or
 ollama pull llama3.2
 ```
 
 ### 3. Install
-Run the automated Makefile installer. This will set up the Python environment, install NPM packages, download the 1.5GB MLX model automatically (via a fast mirror), and set up the `recdis-bot` system command.
+Run the automated Makefile installer. This will set up the Python environment, install NPM packages, download MLX models, and configure **Silero VAD** dependencies (`torch`, `torchaudio`, `torchcodec`).
 ```bash
 make install
 ```
@@ -73,11 +78,12 @@ make start
 2. Join a Voice Channel.
 3. Type `/record` — the bot joins and starts capturing per-user audio streams.
 4. When the meeting ends, type `/stop`.
-5. The bot will:
-   - `[1/3]` Mix all tracks into a timeline-accurate MP3
-   - `[2/3]` Transcribe audio locally via MLX Whisper on the Neural Engine
-   - `[3/3]` Generate structured meeting notes via Ollama
-   - Post the summary text directly into the Discord chat, and attach the MP3, `_transcript.txt`, and `_summary.md` files. All files are simultaneously saved to `~/Downloads`.
+5. The bot will execute the 3-stage pipeline:
+   - `[1/3]` **Mix down** all tracks into a timeline-accurate MP3.
+   - `[2/3]` **Transcribe** audio locally. You can see real-time progress for each participant in your terminal.
+   - `[3/3]` **Summarize** via Ollama. 
+   - **Note:** To keep the UI responsive, the bot will attach the **MP3 and Raw Transcript** to the chat *immediately* after transcription finishes, even while the AI summary is still being generated.
+6. Once complete, the final structured notes (topics, decisions, action items) will be posted. All files are simultaneously saved to `~/Downloads`.
 
 ## 🗂 Project Structure
 

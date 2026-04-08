@@ -42,17 +42,21 @@ module.exports = {
         "⏳ **`[1/3]`** กำลังรวมไฟล์เสียง อยู่น้าทุกคน 😘",
       );
 
+      console.log("[Pipeline] Step 1/3: Starting mixdown...");
       const outputPath = await mixdown(sessionData);
 
       await interaction.editReply(
         "⏳ **`[2/3]`** กำลังถอดเสียงอยู่น้าาาาา รอแป๊ปนุงง 🥹",
       );
 
-      // Parse member names from .env
       let members = [];
       try {
         if (process.env.MEMBERS_NAMES) {
-          members = JSON.parse(process.env.MEMBERS_NAMES);
+          const safeJsonStr = process.env.MEMBERS_NAMES.replace(
+            /([:]\s*)(\d{17,20})/g,
+            '$1"$2"',
+          );
+          members = JSON.parse(safeJsonStr);
         }
       } catch (e) {
         console.warn("Failed to parse MEMBERS_NAMES from .env:", e.message);
@@ -60,26 +64,42 @@ module.exports = {
 
       const taskData = {
         chunks: sessionData.chunks,
-        members: members
+        members: members,
       };
 
+      console.log(
+        `[Pipeline] Step 2/3: Starting transcription for ${sessionData.chunks.length} tracks...`,
+      );
       const transcript = await transcribe(taskData);
-      
-      // Clean up PCM files only AFTER transcription finishes
+
+      console.log("[Pipeline] Transcription complete.");
+      console.log(
+        `\n--- TRANSCRIPT RESULT ---\n${transcript}\n-------------------------\n`,
+      );
+
       cleanupSessionData(sessionData);
-
-      await interaction.editReply("⏳ **`[3/3]`** กำลังสรุปอยู่น้าาาาา 😋");
-
-      const summary = await summarize(transcript);
 
       const stats = fs.statSync(outputPath);
       const fileSizeInMB = stats.size / (1024 * 1024);
-
       const baseName = outputPath.substring(0, outputPath.lastIndexOf("."));
-      const transcriptPath = `${baseName}_transcript.txt`;
-      const summaryPath = `${baseName}_summary.md`;
 
+      const transcriptPath = `${baseName}_transcript.txt`;
       fs.writeFileSync(transcriptPath, transcript, "utf8");
+
+      const intermediateAttachments = [transcriptPath];
+      if (fileSizeInMB < 25) intermediateAttachments.unshift(outputPath);
+
+      await interaction.editReply({
+        content:
+          "⏳ **`[3/3]`** กำลังสรุปอยู่น้าาาาา 😋\n*(แนบไฟล์เสียงและข้อความถอดเสียงให้ดูก่อนน้า)*",
+        files: intermediateAttachments,
+      });
+
+      console.log("[Pipeline] Step 3/3: Starting summarization via Ollama...");
+      const summary = await summarize(transcript);
+      console.log("[Pipeline] Summarization complete.");
+
+      const summaryPath = `${baseName}_summary.md`;
       fs.writeFileSync(summaryPath, summary, "utf8");
 
       const header = `✅ **สรุปการประชุม**\n\n`;
@@ -91,14 +111,12 @@ module.exports = {
             "\n*(truncated — full notes attached in file)*"
           : summary;
 
-      const attachments = [transcriptPath, summaryPath];
-      if (fileSizeInMB < 25) {
-        attachments.unshift(outputPath);
-      }
+      const finalAttachments = [transcriptPath, summaryPath];
+      if (fileSizeInMB < 25) finalAttachments.unshift(outputPath);
 
       await interaction.editReply({
         content: header + summaryBody + footer,
-        files: attachments,
+        files: finalAttachments,
       });
     } catch (error) {
       console.error("Pipeline error:", error);

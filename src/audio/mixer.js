@@ -77,9 +77,6 @@ function mixdown(sessionData) {
       reject(err);
     });
 
-    // Uncomment for debugging
-    // ffmpegProcess.stderr.on('data', (data) => console.log(data.toString()));
-
     ffmpegProcess.on("close", (code) => {
       if (code === 0) {
         console.log(`[Mixer] Successfully created mixdown at ${outputPath}`);

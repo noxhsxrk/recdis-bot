@@ -14,18 +14,19 @@ const fs = require("node:fs");
  */
 function transcribe(taskData) {
   const language = process.env.WHISPER_LANGUAGE || "th";
-  const tempJsonPath = path.join(PROJECT_ROOT, `transcription_task_${Date.now()}.json`);
-  
-  // Write the precise job to disk for Python to read
+  const tempJsonPath = path.join(
+    PROJECT_ROOT,
+    `transcription_task_${Date.now()}.json`,
+  );
+
   fs.writeFileSync(tempJsonPath, JSON.stringify(taskData), "utf8");
 
   return new Promise((resolve, reject) => {
-    execFile(
+    const child = execFile(
       PYTHON_BIN,
       [WORKER_SCRIPT, tempJsonPath, language],
       { maxBuffer: 10 * 1024 * 1024 }, // 10 MB stdout buffer
       (error, stdout, stderr) => {
-        // Clean up the temp JSON
         if (fs.existsSync(tempJsonPath)) {
           fs.unlinkSync(tempJsonPath);
         }
@@ -34,7 +35,7 @@ function transcribe(taskData) {
 
         if (error) {
           return reject(
-            new Error(`Transcription process failed: ${output || stderr}`)
+            new Error(`Transcription process failed: ${output || stderr}`),
           );
         }
 
@@ -47,8 +48,12 @@ function transcribe(taskData) {
         }
 
         resolve(output);
-      }
+      },
     );
+
+    child.stderr.on("data", (data) => {
+      process.stdout.write(data.toString());
+    });
   });
 }
 
