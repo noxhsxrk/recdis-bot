@@ -1,0 +1,6 @@
+.env
+node_modules
+exports
+recordings_ramdisk
+
+.DS_Store
