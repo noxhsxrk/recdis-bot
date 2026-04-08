@@ -41,15 +41,20 @@ client.once(Events.ClientReady, async () => {
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
   try {
-    console.log(
-      `Started refreshing ${commandsArray.length} application (/) commands.`,
-    );
-    const data = await rest.put(Routes.applicationCommands(client.user.id), {
-      body: commandsArray,
-    });
-    console.log(
-      `Successfully reloaded ${data.length} application (/) commands.`,
-    );
+    const guildId = process.env.GUILD_ID;
+    if (guildId) {
+      console.log(`Started refreshing ${commandsArray.length} application (/) commands for Guild: ${guildId}.`);
+      await rest.put(Routes.applicationGuildCommands(client.user.id, guildId), {
+        body: commandsArray,
+      });
+      console.log(`Successfully reloaded ${commandsArray.length} Guild application (/) commands.`);
+    } else {
+      console.log(`Started refreshing ${commandsArray.length} global application (/) commands.`);
+      await rest.put(Routes.applicationCommands(client.user.id), {
+        body: commandsArray,
+      });
+      console.log(`Successfully reloaded ${commandsArray.length} global application (/) commands.`);
+    }
   } catch (error) {
     console.error("Error refreshing commands:", error);
   }
