@@ -1,0 +1,48 @@
+{
+  "root": "/Users/saharat.wae/playground/recdis-bot",
+  "file_count": 21,
+  "walked_file_count": 21,
+  "languages": {
+    "JavaScript": 6,
+    "Markdown": 4,
+    "JSON": 2
+  },
+  "frameworks": [
+    "Node.js",
+    "Make"
+  ],
+  "type_distribution": {
+    "binary": 1,
+    "code": 12,
+    "other": 8
+  },
+  "timed_out": false,
+  "scan_elapsed_seconds": 0.0037900419847574085,
+  "scan_stopped_reason": "completed",
+  "scanned_file_samples": [
+    ".DS_Store",
+    "CONTEXT.md",
+    "Makefile",
+    ".windsurfrules",
+    ".cursorrules",
+    "README.md",
+    ".gitignore",
+    "package-lock.json",
+    "package.json",
+    ".env",
+    ".clinerules",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "artifacts/.gitkeep",
+    "artifacts/logs/.gitkeep",
+    "src/index.js",
+    "src/utils/cleanup.js",
+    "src/audio/mixer.js",
+    "src/audio/streamManager.js",
+    "src/commands/stop.js",
+    "src/commands/record.js"
+  ],
+  "unreadable_files": 0,
+  "oversized_files": 0,
+  "binary_files": 1
+}

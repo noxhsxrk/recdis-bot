@@ -1,0 +1,378 @@
+{
+  "schema": "antigravity-knowledge-graph-v2",
+  "created_at_utc": "2026-04-08T13:49:42.075263+00:00",
+  "workspace": "/Users/saharat.wae/playground/recdis-bot",
+  "summary": {
+    "file_count": 21,
+    "walked_file_count": 21,
+    "languages": {
+      "JavaScript": 6,
+      "Markdown": 4,
+      "JSON": 2
+    },
+    "frameworks": [
+      "Node.js",
+      "Make"
+    ],
+    "type_distribution": {
+      "binary": 1,
+      "code": 12,
+      "other": 8
+    },
+    "semantic_edges": 0
+  },
+  "nodes": [
+    {
+      "id": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "type": "workspace",
+      "label": "recdis-bot"
+    },
+    {
+      "id": "language:javascript",
+      "type": "language",
+      "label": "JavaScript",
+      "count": 6
+    },
+    {
+      "id": "language:markdown",
+      "type": "language",
+      "label": "Markdown",
+      "count": 4
+    },
+    {
+      "id": "language:json",
+      "type": "language",
+      "label": "JSON",
+      "count": 2
+    },
+    {
+      "id": "framework:node.js",
+      "type": "framework",
+      "label": "Node.js"
+    },
+    {
+      "id": "framework:make",
+      "type": "framework",
+      "label": "Make"
+    },
+    {
+      "id": "dir:artifacts",
+      "type": "directory",
+      "label": "artifacts"
+    },
+    {
+      "id": "dir:exports",
+      "type": "directory",
+      "label": "exports"
+    },
+    {
+      "id": "dir:recordings_ramdisk",
+      "type": "directory",
+      "label": "recordings_ramdisk"
+    },
+    {
+      "id": "dir:src",
+      "type": "directory",
+      "label": "src"
+    },
+    {
+      "id": "file:.DS_Store",
+      "type": "binary",
+      "label": ".DS_Store",
+      "size": 6148,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:CONTEXT.md",
+      "type": "code",
+      "label": "CONTEXT.md",
+      "size": 1840,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:Makefile",
+      "type": "other",
+      "label": "Makefile",
+      "size": 458,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.windsurfrules",
+      "type": "other",
+      "label": ".windsurfrules",
+      "size": 690,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.cursorrules",
+      "type": "other",
+      "label": ".cursorrules",
+      "size": 1560,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:README.md",
+      "type": "code",
+      "label": "README.md",
+      "size": 3105,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.gitignore",
+      "type": "other",
+      "label": ".gitignore",
+      "size": 55,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:package-lock.json",
+      "type": "code",
+      "label": "package-lock.json",
+      "size": 33587,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:package.json",
+      "type": "code",
+      "label": "package.json",
+      "size": 537,
+      "mime": "application/json"
+    },
+    {
+      "id": "file:.env",
+      "type": "other",
+      "label": ".env",
+      "size": 312,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:.clinerules",
+      "type": "other",
+      "label": ".clinerules",
+      "size": 687,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:AGENTS.md",
+      "type": "code",
+      "label": "AGENTS.md",
+      "size": 807,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:CLAUDE.md",
+      "type": "code",
+      "label": "CLAUDE.md",
+      "size": 777,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:artifacts/.gitkeep",
+      "type": "other",
+      "label": "artifacts/.gitkeep",
+      "size": 0,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:artifacts/logs/.gitkeep",
+      "type": "other",
+      "label": "artifacts/logs/.gitkeep",
+      "size": 0,
+      "mime": "application/octet-stream"
+    },
+    {
+      "id": "file:src/index.js",
+      "type": "code",
+      "label": "src/index.js",
+      "size": 2329,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/utils/cleanup.js",
+      "type": "code",
+      "label": "src/utils/cleanup.js",
+      "size": 747,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/audio/mixer.js",
+      "type": "code",
+      "label": "src/audio/mixer.js",
+      "size": 2318,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/audio/streamManager.js",
+      "type": "code",
+      "label": "src/audio/streamManager.js",
+      "size": 2850,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/commands/stop.js",
+      "type": "code",
+      "label": "src/commands/stop.js",
+      "size": 1931,
+      "mime": "text/javascript"
+    },
+    {
+      "id": "file:src/commands/record.js",
+      "type": "code",
+      "label": "src/commands/record.js",
+      "size": 1454,
+      "mime": "text/javascript"
+    }
+  ],
+  "edges": [
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "language:javascript",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "language:markdown",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "language:json",
+      "type": "uses_language"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "framework:node.js",
+      "type": "uses_framework"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "framework:make",
+      "type": "uses_framework"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:artifacts",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:exports",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:recordings_ramdisk",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "dir:src",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.DS_Store",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:CONTEXT.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:Makefile",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.windsurfrules",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.cursorrules",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:README.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.gitignore",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:package-lock.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:package.json",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.env",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:.clinerules",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:AGENTS.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:CLAUDE.md",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:artifacts/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:artifacts/logs/.gitkeep",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/index.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/utils/cleanup.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/audio/mixer.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/audio/streamManager.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/commands/stop.js",
+      "type": "contains"
+    },
+    {
+      "from": "workspace:/Users/saharat.wae/playground/recdis-bot",
+      "to": "file:src/commands/record.js",
+      "type": "contains"
+    }
+  ]
+}
