@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const { runPipeline } = require("../utils/pipeline");
 const fs = require("fs");
 const path = require("path");
+const { safeReply } = require("../utils/discordUtils");
 
 const LAST_SESSION_PATH = path.join(__dirname, "..", "..", "last_session.json");
 
@@ -27,7 +28,7 @@ module.exports = {
         return interaction.followUp("ข้อมูลเซสชันล่าสุดไม่มีไฟล์เสียงเลย 🥺");
       }
 
-      await interaction.editReply("🔄 **กำลังพยายามทำต่อจากเดิมให้นะจ๊ะ...**");
+      await safeReply(interaction, "🔄 **กำลังพยายามทำต่อจากเดิมให้นะจ๊ะ...**");
 
       // Run the pipeline (runPipeline already handles skipping existing files)
       await runPipeline(interaction, sessionData);
@@ -35,7 +36,7 @@ module.exports = {
     } catch (error) {
       console.error("Pipeline error in retry command:", error);
       if (interaction.deferred || interaction.replied) {
-        await interaction.editReply(`❌ **Retry failed:** ${error.message}`);
+        await safeReply(interaction, `❌ **Retry failed:** ${error.message}`);
       } else {
         await interaction.reply(`❌ **Retry failed:** ${error.message}`);
       }

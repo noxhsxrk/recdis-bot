@@ -7,10 +7,13 @@ A privacy-focused Discord bot built with Node.js that records multi-track audio 
 - 🎧 **Multi-Track Recording:** Captures each speaker's RTP packets individually so voices never clip or muffle each other before mixdown.
 - ⏱️ **Automatic Timeline Alignment:** Tracks precise millisecond offsets of when each user spoke. FFmpeg adds delays to align all speech bursts perfectly.
 - 🗣️ **Real-time Diarization (Speaker ID):** Accurately tags individual transcription lines with the speaker's mapped name based on their isolated Discord audio track.
-- 🧠 **Local AI Transcription (MLX Whisper):** Uses Apple's Neural Engine via `mlx-whisper` — fast, private, and optimized for M-series chips.
+- 🧠 **Local AI Transcription (Thonburian Whisper):** Uses the fine-tuned `distill-thonburian-whisper-large-v3-mlx` — specifically optimized for Thai speech, running on Apple's Neural Engine.
 - 🛡️ **Silero VAD (Voice Activity Detection):** Integrated hardware-accelerated speech detection that filters out keyboard clicks and background noise before it hits the AI, preventing "hallucinations."
 - 📝 **AI Meeting Summary (Ollama):** Generates structured notes via local Ollama models with a streaming implementation to prevent timeouts on long transcripts.
-- ⚡ **Anti-Hallucination Filters:** Built-in heuristics to detect and discard infinite word loops or "A.I. stuttering."
+- ⚡ **Anti-Hallucination Filters:** Advanced heuristics to detect and discard:
+  - Infinite word loops or "A.I. stuttering."
+  - Non-target language fragments (e.g., random CJK characters from noise).
+  - "Prompt Leakage" where the model ignores speech and repeats the system instruction.
 - 🛡️ **Privacy Hardened:**
   - Raw `.pcm` buffers are written to `tmpfs` (RAM disk) — never persistently stored on disk.
   - No database; all session metadata is in-memory only.
@@ -61,8 +64,14 @@ ollama pull llama3.2
 ### 3. Install
 Run the automated Makefile installer. This will set up the Python environment, install NPM packages, download MLX models, and configure **Silero VAD** dependencies (`torch`, `torchaudio`, `torchcodec`).
 ```bash
-make install
-```
+ make install
+ ```
+ 
+ > [!TIP]
+ > **Slow Download?** If the automated download is stuck or slow, you can use `curl` to download the heavy weights manually to `local_whisper_model/weights.safetensors`:
+ > ```bash
+ > curl -L -C - -o local_whisper_model/weights.safetensors https://hf-mirror.com/tawankri/distill-thonburian-whisper-large-v3-mlx/resolve/main/weights.safetensors
+ > ```
 
 
 ## 🎮 Usage

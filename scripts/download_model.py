@@ -3,7 +3,7 @@ from huggingface_hub import snapshot_download
 
 os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
-model_id = "mlx-community/whisper-large-v3-turbo"
+model_id = "tawankri/distill-thonburian-whisper-large-v3-mlx"
 local_dir = "local_whisper_model"
 
 print(f"🚀 Updating / Downloading model '{model_id}'...")

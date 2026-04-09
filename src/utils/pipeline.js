@@ -4,6 +4,7 @@ const { mixdown } = require("../audio/mixer");
 const { transcribe } = require("../ai/transcriber");
 const { summarize } = require("../ai/summarizer");
 const { cleanupSessionData } = require("../utils/cleanup");
+const { safeReply } = require("./discordUtils");
 
 const DISCORD_MSG_LIMIT = 1900;
 const DOWNLOADS_DIR = path.join(require("os").homedir(), "Downloads");
@@ -19,7 +20,7 @@ async function runPipeline(interaction, sessionData) {
   try {
     // Stage 1: Mixdown
     if (!fs.existsSync(outputPath)) {
-      await interaction.editReply("⏳ **`[1/3]`** กำลังรวมไฟล์เสียง อยู่น้าทุกคน 😘");
+      await safeReply(interaction, "⏳ **`[1/3]`** กำลังรวมไฟล์เสียง อยู่น้าทุกคน 😘");
       console.log("[Pipeline] Step 1/3: Starting mixdown...");
       await mixdown(sessionData);
     } else {
@@ -29,7 +30,7 @@ async function runPipeline(interaction, sessionData) {
     // Stage 2: Transcription
     let transcript;
     if (!fs.existsSync(transcriptPath)) {
-      await interaction.editReply("⏳ **`[2/3]`** กำลังถอดเสียงอยู่น้าาาาา รอแป๊ปนุงง 🥹");
+      await safeReply(interaction, "⏳ **`[2/3]`** กำลังถอดเสียงอยู่น้าาาาา รอแป๊ปนุงง 🥹");
       
       let members = [];
       try {
@@ -61,7 +62,7 @@ async function runPipeline(interaction, sessionData) {
     const intermediateAttachments = [transcriptPath];
     if (fileSizeInMB < 25) intermediateAttachments.unshift(outputPath);
 
-    await interaction.editReply({
+    await safeReply(interaction, {
       content: "⏳ **`[3/3]`** กำลังสรุปอยู่น้าาาาา 😋\n*(แนบไฟล์เสียงและข้อความถอดเสียงให้ดูก่อนน้า)*",
       files: intermediateAttachments,
     });
@@ -88,7 +89,7 @@ async function runPipeline(interaction, sessionData) {
     const finalAttachments = [transcriptPath, summaryPath];
     if (fileSizeInMB < 25) finalAttachments.unshift(outputPath);
 
-    await interaction.editReply({
+    await safeReply(interaction, {
       content: header + summaryBody + footer,
       files: finalAttachments,
     });

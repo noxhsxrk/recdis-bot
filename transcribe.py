@@ -7,21 +7,36 @@ import re
 import torch
 import torchaudio
 
-def is_hallucination(text):
+def clean_hallucination(text):
     text = text.strip()
     if not text:
-        return False
-    if re.search(r'(.{1,15}?)\1{5,}', text):
-        return True
+        return ""
+    
+    if re.search(r'[^\u0E00-\u0E7F\u0020-\u007E\s]', text):
+        return ""
+
+    text = re.sub(r'([ก-ฮะ-์])\1{4,}', r'\1\1\1', text)
+
+    match = re.search(r'(.{1,30}?)\1{3,}', text)
+    if match:
+        pattern = match.group(1).strip()
+        start_index = match.start()
+        
+        if 1 <= len(pattern) <= 6:
+            text = text[:start_index + (len(match.group(1)) * 3)]
+        else:
+            text = text[:start_index + len(match.group(1))]
+    
+    prompt_keywords = ["ถอดความ", "การประชุม", "ภาษาไทย", "พูดคุย"]
+    match_count = sum(1 for kw in prompt_keywords if kw in text)
+    if match_count >= 2 and len(text) < 50:
+        return ""
+
     unique_chars = set(text.replace(" ", ""))
-    if len(text) > 35 and len(unique_chars) < 5:
-        return True
-    words = text.split()
-    if len(words) > 10:
-        unique_words = set(words)
-        if len(unique_words) / len(words) < 0.2:
-            return True
-    return False
+    if len(text) > 45 and len(unique_chars) < 5:
+        return ""
+        
+    return text.strip()
 
 if len(sys.argv) < 3:
     print("STT_ERROR: Missing task JSON path or language")
@@ -42,7 +57,7 @@ try:
     member_map = { str(m.get("id")): m.get("name") for m in members }
 
     model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "local_whisper_model")
-    repo_or_dir = model_path if os.path.isdir(model_path) else "mlx-community/whisper-large-v3-turbo"
+    repo_or_dir = model_path if os.path.isdir(model_path) else "tawankri/distill-thonburian-whisper-large-v3-mlx"
 
     results = []
 
@@ -70,6 +85,8 @@ try:
         try:
             wav, sr = torchaudio.load(wav_path)
             speech_timestamps = get_speech_timestamps(wav, vad_model, sampling_rate=16000, threshold=0.5)
+
+            speech_timestamps = [ts for ts in speech_timestamps if (ts['end'] - ts['start']) / 16000 >= 0.4]
             
             if not speech_timestamps:
                 os.remove(wav_path)
@@ -97,20 +114,23 @@ try:
                     language=language,
                     condition_on_previous_text=False,
                     no_speech_threshold=0.6,
-                    logprob_threshold=-2.0,
+                    logprob_threshold=-1.0,
                     word_timestamps=True, 
-                    compression_ratio_threshold=2.4,
-                    initial_prompt="นี่คือการถอดความบทสนทนาภาษาไทยในห้อง Discord",
-                    temperature=(0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+                    compression_ratio_threshold=2.0,
+                    initial_prompt="ถอดความการพูดคุยภาษาไทย",
+                    temperature=(0.0, 0.2, 0.4)
                 )
                 
                 text = res.get("text", "").strip()
                 os.remove(segment_path)
                 
-                if text and not is_hallucination(text):
-                    track_text_parts.append(text)
+                cleaned_text = clean_hallucination(text)
+                if cleaned_text:
+                    track_text_parts.append(cleaned_text)
+                    if cleaned_text != text:
+                         print(f"[Transcriber] Cleaned repetition in track {i+1} segment {j+1}: \"{text[:40]}...\" -> \"{cleaned_text}\"", file=sys.stderr, flush=True)
                 elif text:
-                    print(f"[Transcriber] Filtered hallucination in track {i+1} segment {j+1}: \"{text[:50]}...\"", file=sys.stderr, flush=True)
+                    print(f"[Transcriber] Filtered total hallucination in track {i+1} segment {j+1}: \"{text[:50]}...\"", file=sys.stderr, flush=True)
 
             os.remove(wav_path)
             
