@@ -22,7 +22,7 @@ function initSession(connection) {
     chunks: [],
     activeStreams: [],
     recordingUsers: new Set(),
-    speakingListener: null
+    speakingListener: null,
   };
 
   const receiver = connection.receiver;
@@ -55,11 +55,32 @@ function handleUserStream(receiver, userId) {
     },
   });
 
+  audioStream.on("error", (err) => {
+    console.error(
+      `[StreamManager] Audio stream error for user ${userId}:`,
+      err.message,
+    );
+  });
+
   const pcmStream = audioStream.pipe(
     new prism.opus.Decoder({ rate: 48000, channels: 2, frameSize: 960 }),
   );
 
+  pcmStream.on("error", (err) => {
+    console.error(
+      `[StreamManager] PCM decode error for user ${userId}:`,
+      err.message,
+    );
+  });
+
   const writeStream = fs.createWriteStream(filePath);
+  writeStream.on("error", (err) => {
+    console.error(
+      `[StreamManager] Write stream error for user ${userId}:`,
+      err.message,
+    );
+  });
+
   pcmStream.pipe(writeStream);
 
   activeSession.activeStreams.push(writeStream);
@@ -93,7 +114,10 @@ function endSession() {
   }
 
   if (activeSession.connection && activeSession.speakingListener) {
-    activeSession.connection.receiver.speaking.removeListener("start", activeSession.speakingListener);
+    activeSession.connection.receiver.speaking.removeListener(
+      "start",
+      activeSession.speakingListener,
+    );
   }
 
   const sessionData = {
