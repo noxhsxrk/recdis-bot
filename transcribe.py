@@ -69,7 +69,7 @@ try:
 
         try:
             wav, sr = torchaudio.load(wav_path)
-            speech_timestamps = get_speech_timestamps(wav, vad_model, sampling_rate=16000, threshold=0.3)
+            speech_timestamps = get_speech_timestamps(wav, vad_model, sampling_rate=16000, threshold=0.5)
             
             if not speech_timestamps:
                 os.remove(wav_path)

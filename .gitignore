@@ -5,3 +5,5 @@ recordings_ramdisk
 
 .DS_Store
 local_whisper_model
+
+last_session.json
